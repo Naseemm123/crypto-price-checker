@@ -25,7 +25,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let url: String = create_url(&cli.token, &cli.currency);
 
-    let body = reqwest::get(&url)
+    let client = reqwest::Client::builder()
+        .user_agent("crypto-price-checker (github.com/Naseemm123/crypto-price-checker)")
+        .build()?;
+
+    let body = client.get(&url)
+        .send()
         .await?
         .text()
         .await?;
